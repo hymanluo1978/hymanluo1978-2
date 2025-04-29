@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目管理优化方案</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-body ul {
+            padding-left: 20px;
+        }
+        
+        .card-body li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .card-body li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: -15px;
+        }
+        
+        .highlight {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: var(--light-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            color: var(--dark-color);
+        }
+        
+        .action-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid var(--secondary-color);
+            margin-bottom: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .action-title {
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .action-title i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-block {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .toggle-details {
+            background-color: transparent;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .toggle-details i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .details-content {
+            display: none;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .active .toggle-details i {
+            transform: rotate(180deg);
+        }
+        
+        .active .details-content {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>项目管理优化方案</h1>
+            <div class="subtitle">提升执行力 · 紧盯作业面 · 调得动班组</div>
+        </header>
+        
+        <div class="card-container">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-clipboard-check"></i>
+                    <h2>加强责任落地与执行力</h2>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-tasks"></i>
+                            责任划分与明示
+                        </div>
+                        <p>明确事项、界面、标准、责任人和验收时间(N-5)，采用挂牌明示方式。</p>
+                        <button class="toggle-details">
+                            查看详细要求
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="details-content">
+                            <ul>
+                                <li>制作可视化责任矩阵图，在施工现场显著位置展示</li>
+                                <li>每日晨会确认责任落实情况</li>
+                                <li>建立责任追溯机制，与绩效考核挂钩</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-list-ol"></i>
+                            销项清单管理
+                        </div>
+                        <p>按照销项清单逐一对照晾晒，建立<span class="highlight">紧盯不放</span>的工作机制。</p>
+                    </div>
+                    
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            每日安全管控
+                        </div>
+                        <p>生产经理及安全主管每日关注危险源动态，利用晨会开展安全交底与高危作业流程布置，重点防范<span class="highlight">高坠和物体打击</span>风险。</p>
+                    </div>
+                    
+                    <button class="btn btn-block">下载责任划分模板</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-hard-hat"></i>
+                    <h2>质量问题防治与销项</h2>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-ruler-combined"></i>
+                            作业面实测实量
+                        </div>
+                        <p>紧盯作业面，特别是<span class="highlight">混凝土收面管控</span>，采用影像化、数据化验收方式。</p>
+                        <button class="toggle-details">
+                            查看验收标准
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="details-content">
+                            <ul>
+                                <li>每道工序完成后30分钟内进行实测</li>
+                                <li>关键节点必须留存影像资料</li>
+                                <li>建立电子化验收档案，可追溯</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-user-shield"></i>
+                            护模护筋管理
+                        </div>
+                        <p>确保班组的护模护筋人员到位，建立专人负责制。</p>
+                    </div>
+                    
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-clipboard-list"></i>
+                            完成面排查销项
+                        </div>
+                        <p>专人排查下部完成面，组织对口销项，生产经理亲自抓<span class="highlight">封闭率</span>。</p>
+                        <button class="toggle-details">
+                            销项表管理要点
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="details-content">
+                            <ul>
+                                <li>建立分级销项制度：班组级、项目级、公司级</li>
+                                <li>每日更新销项进度，可视化展示</li>
+                                <li>销项闭环时间不超过24小时</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-block">下载质量检查表</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-users"></i>
+                    <h2>劳务资源应答响应</h2>
+                </div>
+                <div class="card-body">
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-tools"></i>
+                            整改劳动力配置
+                        </div>
+                        <p>确保现场销项整改有对应的劳动力配置，班组整改人员必须达到要求。</p>
+                    </div>
+                    
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-search"></i>
+                            动态检查机制
+                        </div>
+                        <p>管理人员对照检查整改清单，在现场进行<span class="highlight">动态检查</span>。</p>
+                    </div>
+                    
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-exchange-alt"></i>
+                            班组调动能力
+                        </div>
+                        <p>建立有效的班组调动机制，确保<span class="highlight">调得动班组</span>。</p>
+                        <button class="toggle-details">
+                            班组管理策略
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="details-content">
+                            <ul>
+                                <li>建立班组绩效考核制度</li>
+                                <li>实施班组分级管理</li>
+                                <li>关键班组设置AB角</li>
+                                <li>建立班组应急响应机制</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="action-item">
+                        <div class="action-title">
+                            <i class="fas fa-handshake"></i>
+                            劳务协调机制
+                        </div>
+                        <p>建立劳务负责人每日例会制度，确保问题当日解决。</p>
+                    </div>
+                    
+                    <button class="btn btn-block">下载劳务协调记录表</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 项目管理优化方案 | 更新日期: <span id="current-date"></span></p>
+        </footer>
+    </div>
+    
+    <script>
+        // 设置当前日期
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('zh-CN');
+        
+        // 切换详细内容显示
+        document.querySelectorAll('.toggle-details').forEach(button => {
+            button.addEventListener('click', function() {
+                this.parentElement.classList.toggle('active');
+            });
+        });
+        
+        // 模拟按钮点击效果
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function() {
+                alert('功能演示: 您点击了"' + this.textContent + '"按钮');
+            });
+        });
+    </script>
+</body>
+</html>
